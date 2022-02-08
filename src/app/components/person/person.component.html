@@ -13,10 +13,13 @@
         <form>
           <div class="form-group">
             <label for="idCrecer">Id crecer</label>
-            <input class="form-control" id="idCrecer" placeholder="Enter email">
+            <input class="form-control" id="idCrecer" name="idCrecer" [(ngModel)]="id" placeholder="Enter email">
             <small class="form-text text-muted">Ingrese el id.</small>
           </div>
-          <button type="submit" class="btn btn-primary">Aceptar</button>
+          <button type="submit" class="btn btn-primary" (click)="getPersonsById('id')"
+                  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Aceptar
+          </button>
         </form>
       </div>
     </div>
@@ -34,25 +37,28 @@
         <form>
           <div class="form-group">
             <label for="personType">Tipo Persona</label>
-            <select id="personType" class="form-control">
-              <option>Natural</option>
-              <option>Juridica</option>
+            <select name="personType" [(ngModel)]="personType" id="personType" class="form-control">
+              <option value="nrodoc">Natural</option>
+              <option value="cuit">Juridica</option>
             </select>
           </div>
           <div class="form-group">
             <label for="documentNumber">Nro Documento</label>
-            <input class="form-control" id="documentNumber" placeholder="Ingrese el documento">
+            <input class="form-control" id="documentNumber" name="documentNumber" [(ngModel)]="id" placeholder="Ingrese el documento">
           </div>
-          <div class="form-group">
+          <!--div class="form-group">
             <label for="exampleInputEmail1">Denominacion</label>
             <input class="form-control" id="exampleInputEmail1" placeholder="Ingrese la denominacion">
-          </div>
-          <button type="submit" class="btn btn-primary">Aceptar</button>
+          </div-->
+          <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
+                  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Aceptar
+          </button>
         </form>
       </div>
     </div>
   </div>
-  <div class="card">
+  <!--div class="card">
     <div class="card-header" id="headingThree">
       <h5 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -82,5 +88,5 @@
         </form>
       </div>
     </div>
-  </div>
+  </div-->
 </div>
