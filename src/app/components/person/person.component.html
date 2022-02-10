@@ -101,7 +101,10 @@
                 <mat-label>Cuenta</mat-label>
                 <input class="textarea" matInput placeholder="Ingrese la cuenta" name="id" [(ngModel)]="id" />
               </mat-form-field>
-              <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)">Aceptar</button>
+              <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
+                      data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Aceptar
+              </button>
             </form>
           </div>
         </div>
