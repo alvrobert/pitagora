@@ -1,92 +1,207 @@
-<div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Busqueda por Id Crecer
-        </button>
-      </h5>
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="">Home</a>
+    </li>
+    <li class="breadcrumb-item active">personas</li>
+  </ol>
+
+  <div class="table table-striped table-responsive">
+
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Busqueda por Id Crecer
+            </button>
+          </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <form>
+              <mat-form-field class="example-full-width">
+                <mat-label>Id crecer</mat-label>
+                <input class="textarea" matInput placeholder="Ingrese el Id" required name="id" [(ngModel)]="id"/>
+              </mat-form-field>
+              <button [disabled]="id === ''"  type="submit" class="btn btn-primary" (click)="getPersonsById('id')"
+                      data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Aceptar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Busqueda por Persona
+            </button>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            <form>
+              <mat-form-field>
+                <mat-label>Tipo Persona</mat-label>
+                <mat-select name="personType" [(ngModel)]="personType">
+                  <mat-option value="nrodoc">
+                    Natural
+                  </mat-option>
+                  <mat-option value="cuit">
+                    Juridica
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <mat-label>Nro Documento</mat-label>
+                <input class="textarea" matInput placeholder="Ingrese el Id" name="id" [(ngModel)]="id" />
+              </mat-form-field>
+              <!--div class="form-group">
+                <label for="exampleInputEmail1">Denominacion</label>
+                <input class="form-control" id="exampleInputEmail1" placeholder="Ingrese la denominacion">
+              </div-->
+              <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
+                      data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Aceptar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Busqueda por Cuenta
+            </button>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            <form>
+              <!--div class="form-group">
+                <label>Filial</label>
+                <input class="form-control" id="filifal" placeholder="Ingrese la filial">
+              </div-->
+              <mat-form-field>
+                <mat-label>Tipo Cuenta</mat-label>
+                <mat-select name="personType" [(ngModel)]="personType">
+                  <mat-option value="nrodoc">
+                    Ahorros
+                  </mat-option>
+                  <mat-option value="cuit">
+                    Corriente
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <mat-label>Cuenta</mat-label>
+                <input class="textarea" matInput placeholder="Ingrese la cuenta" name="id" [(ngModel)]="id" />
+              </mat-form-field>
+              <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)">Aceptar</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <label for="idCrecer">Id crecer</label>
-            <input class="form-control" id="idCrecer" name="idCrecer" [(ngModel)]="id" placeholder="Enter email">
-            <small class="form-text text-muted">Ingrese el id.</small>
-          </div>
-          <button type="submit" class="btn btn-primary" (click)="getPersonsById('id')"
-                  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Aceptar
-          </button>
-        </form>
+    <hr>
+
+    <loading-spinner *ngIf="loading"></loading-spinner>
+    <div *ngIf="filteredPersons.length>0">
+
+      <table mat-table [dataSource]="filteredPersons" class="table">
+        <!-- Position Column -->
+        <ng-container matColumnDef="idPersona">
+          <th mat-header-cell *matHeaderCellDef> Id Crecer. </th>
+          <td mat-cell *matCellDef="let element"> {{element.idPersona}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nroDoc">
+          <th mat-header-cell *matHeaderCellDef> Nro Documento. </th>
+          <td mat-cell *matCellDef="let element"> {{element.nroDoc}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre. </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nroCUI">
+          <th mat-header-cell *matHeaderCellDef> CUIT/L/E. </th>
+          <td mat-cell *matCellDef="let element"> {{element.nroCUI}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              type="button"
+              class="btn"
+              matTooltip="Detalle"
+              (click)="setPerson(element)"
+              data-toggle="modal"
+              data-backdrop="static"
+              data-keyboard="false"
+              data-target="#detail">
+              <i class="fas fa-eye"></i>
+              Ver detalle
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<!-- key data Modal-->
+<div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div *ngIf="person!=null" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailLabel">Detalle - {{person.nombre}} </h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="table-responsive">
+          <h3>Datos Personales</h3>
+          <table class="table table-sm table-hover">
+            <tr>
+              <th>Id Crecer</th>
+              <td>{{person.idPersona}}</td>
+              <th>Nombre</th>
+              <td>{{person.nombre}}</td>
+              <th>DNI</th>
+              <td>{{person.nroDoc}}</td>
+            </tr>
+            <tr>
+              <th>CUIT</th>
+              <td>{{person.nroCUI}}</td>
+              <th>Clave BUP</th>
+              <td>{{person.claveBUP}}</td>
+              <th>Tipo persona</th>
+              <td>{{person.tipoPersona === 'F' ? 'Natural' : 'Juridica' }}</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Balances</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion 2</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion 3</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion N</button>
       </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Busqueda por Persona
-        </button>
-      </h5>
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <label for="personType">Tipo Persona</label>
-            <select name="personType" [(ngModel)]="personType" id="personType" class="form-control">
-              <option value="nrodoc">Natural</option>
-              <option value="cuit">Juridica</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="documentNumber">Nro Documento</label>
-            <input class="form-control" id="documentNumber" name="documentNumber" [(ngModel)]="id" placeholder="Ingrese el documento">
-          </div>
-          <!--div class="form-group">
-            <label for="exampleInputEmail1">Denominacion</label>
-            <input class="form-control" id="exampleInputEmail1" placeholder="Ingrese la denominacion">
-          </div-->
-          <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
-                  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Aceptar
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Busqueda por Cuenta
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <label for="documentNumber">Filial</label>
-            <input class="form-control" id="filifal" placeholder="Ingrese la filial">
-          </div>
-          <div class="form-group">
-            <label for="accountType">Tipo Cuenta</label>
-            <select id="accountType" class="form-control">
-              <option>Corriente</option>
-              <option>Ahorros</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Cuenta</label>
-            <input class="form-control" id="account" placeholder="Ingrese la cuenta">
-          </div>
-          <button type="submit" class="btn btn-primary">Aceptar</button>
-        </form>
-      </div>
-    </div>
-  </div-->
 </div>
