@@ -23,7 +23,7 @@
             <form>
               <mat-form-field class="example-full-width">
                 <mat-label>Id crecer</mat-label>
-                <input class="textarea" matInput placeholder="Ingrese el Id" required name="id" [(ngModel)]="id"/>
+                <input type="number" class="textarea" matInput placeholder="Ingrese el Id" required name="id" [(ngModel)]="id"/>
               </mat-form-field>
               <button [disabled]="id === ''"  type="submit" class="btn btn-primary" (click)="getPersonsById('id')"
                       data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -57,7 +57,7 @@
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <mat-label>Nro Documento</mat-label>
-                <input class="textarea" matInput placeholder="Ingrese el Id" name="id" [(ngModel)]="id" />
+                <input class="textarea" type="number"  matInput placeholder="Ingrese el Id" name="id" [(ngModel)]="id" />
               </mat-form-field>
               <!--div class="form-group">
                 <label for="exampleInputEmail1">Denominacion</label>
@@ -99,7 +99,7 @@
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <mat-label>Cuenta</mat-label>
-                <input class="textarea" matInput placeholder="Ingrese la cuenta" name="id" [(ngModel)]="id" />
+                <input class="textarea" type="number"  matInput placeholder="Ingrese la cuenta" name="id" [(ngModel)]="id" />
               </mat-form-field>
               <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
                       data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
