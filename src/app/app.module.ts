@@ -42,6 +42,7 @@ import {NumeralModule} from 'ngx-numeral';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { PersonComponent } from './components/person/person.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { PersonDetailComponent } from './components/person-detail/person-detail.component';
 
 export const environment = {
   production: false,
@@ -69,6 +70,12 @@ const appRoutes: Routes = [
     children: []
   },
   {
+    path: 'person/:id',
+    canActivate: [],
+    component: PersonDetailComponent,
+    children: []
+  },
+  {
     path: 'in-construction',
     canActivate: [],
     component: InConstructionComponent,
@@ -92,7 +99,8 @@ const appRoutes: Routes = [
     InConstructionComponent,
     LoadingSpinnerComponent,
     ConfirmationDialogComponent,
-    PersonComponent
+    PersonComponent,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,

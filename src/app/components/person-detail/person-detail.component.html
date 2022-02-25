@@ -1,0 +1,134 @@
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="">Inicio</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a routerLink="/person">Personas</a>
+    </li>
+    <li class="breadcrumb-item active">
+      Detalle
+    </li>
+  </ol>
+  <div  *ngIf="person">
+    <div *ngIf="account===null">
+      <div class="jumbotron table-responsive">
+        <h3>Datos Personales</h3>
+        <table class="table table-sm table-hover">
+          <tr>
+            <th>Id Crecer</th>
+            <td>{{person.idPersona}}</td>
+            <th>Nombre</th>
+            <td>{{person.nombre}}</td>
+            <th>DNI</th>
+            <td>{{person.nroDoc}}</td>
+          </tr>
+          <tr>
+            <th>CUIT</th>
+            <td>{{person.nroCUI}}</td>
+            <th>Clave BUP</th>
+            <td>{{person.claveBUP}}</td>
+            <th>Tipo persona</th>
+            <td>{{person.tipoPersona === 'F' ? 'Natural' : 'Juridica' }}</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+
+        <table mat-table [dataSource]="dataSource" class="table">
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="titular">
+            <th mat-header-cell *matHeaderCellDef> Titular </th>
+            <td mat-cell *matCellDef="let element"> {{element.titular}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="saldo">
+            <th mat-header-cell *matHeaderCellDef> Saldo </th>
+            <td mat-cell *matCellDef="let element"> {{element.saldo}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="CBU">
+            <th mat-header-cell *matHeaderCellDef> CBU </th>
+            <td mat-cell *matCellDef="let element"> {{element.CBU}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="cuenta">
+            <th mat-header-cell *matHeaderCellDef> Cuenta </th>
+            <td mat-cell *matCellDef="let element"> {{element.cuenta}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+              <a
+                type="button"
+                class="btn"
+                matTooltip="Detalle"
+                (click)="setAccount(element)">
+                <i class="fas fa-eye"></i>
+              </a>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <mat-paginator [length]="100"
+                         [pageSize]="10"
+                         [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="account!==null">
+      <mat-form-field>
+        <button mat-mini-fab color="primary" (click)="setAccount(null)">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+      </mat-form-field>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#balance" role="tab" aria-controls="home" aria-selected="true">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="option-2-tab" data-toggle="tab" href="#option-2" role="tab" aria-controls="profile" aria-selected="false">Opcion 2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="option-3-tab" data-toggle="tab" href="#option-3" role="tab" aria-controls="profile" aria-selected="false">Opcion 3</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="option-n-tab" data-toggle="tab" href="#option-n" role="tab" aria-controls="profile" aria-selected="false">Opcion N</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+          <app-in-construction></app-in-construction>
+        </div>
+        <div class="tab-pane fade" id="option-2" role="tabpanel" aria-labelledby="imports-tab">
+          <app-in-construction></app-in-construction>
+        </div>
+        <div class="tab-pane fade" id="option-3" role="tabpanel" aria-labelledby="imports-tab">
+          <app-in-construction></app-in-construction>
+        </div>
+        <div class="tab-pane fade" id="option-n" role="tabpanel" aria-labelledby="imports-tab">
+          <app-in-construction></app-in-construction>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="jumbotron" *ngIf="!person">
+    <h1 class="display-4">Ups!</h1>
+    <p class="lead">La persona con id: {{id}} no existe</p>
+    <hr class="my-4">
+    <p>Pedimos disculpas por las molestias ocacionadas.</p>
+    <a class="btn btn-primary btn-lg" routerLink="/person" role="button">Volver</a>
+  </div>
+</div>

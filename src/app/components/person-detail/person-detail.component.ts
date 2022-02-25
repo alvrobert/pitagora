@@ -1,33 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {PersonService} from '../../services/person.service';
-import {MatSnackBar} from '@angular/material';
-import {FormControl, Validators} from '@angular/forms';
-
-export interface Person {
-  idPersona: string;
-  claveBUP: string;
-  restricciones: string;
-  motivoDesvinculacion: string;
-  tipoCaptura: string;
-  tipoDoc: string;
-  nroDoc: string;
-  emisor: string;
-  tipoDoc2: string;
-  nroDoc2: string;
-  emisor2: string;
-  tipoCUI: string;
-  nroCUI: string;
-  nroCUIAnt: string;
-  nroInterno: string;
-  nroDeInscEnte: string;
-  apellidoRazonSocial: string;
-  apellidoCasadaNombFantasia: string;
-  nombre: string;
-  tipoPersona: string;
-  provinciaDomic: string;
-  localidadDomic: string;
-  idVigEnUnificacion: string;
-}
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Person} from '../person/person.component';
+import { MatTableDataSource } from '@angular/material';
 
 const persons: Person[] = [
   {
@@ -257,67 +231,79 @@ const persons: Person[] = [
   }
 ];
 
-@Component({
-  selector: 'app-person',
-  templateUrl: './person.component.html',
-  styleUrls: ['./person.component.css']
-})
-export class PersonComponent implements OnInit {
+const accounts: any[] = [
+  {
+    titular: 'Xander Clements',
+    saldo: '$71.96',
+    CBU: 'SE8488135138153198535129',
+    cuenta: '362481-1'
+  },
+  {
+    titular: 'Chava Cunningham',
+    saldo: '$70.44',
+    CBU: 'EE679141189387587117',
+    cuenta: '50716656-3'
+  },
+  {
+    titular: 'Rina Cohen',
+    saldo: '$60.15',
+    CBU: 'FI0770309480415142',
+    cuenta: '50508352-0'
+  },
+  {
+    titular: 'Oprah Barrera',
+    saldo: '$61.19',
+    CBU: 'DO54234288005568565644765758',
+    cuenta: '43668907-1'
+  },
+  {
+    titular: 'Lane Morales',
+    saldo: '$82.63',
+    CBU: 'MD6702877345881851653641',
+    cuenta: '37527266-0'
+  }
+];
 
-  person: Person = null;
-  filteredPersons: Person[] = [];
-  loading = false;
-  displayedColumns: string[] = ['idPersona', 'nroDoc', 'nombre', 'nroCUI', 'actions'];
-  personsData = persons;
-  id = '';
-  personType = 'nrodoc';
+@Component({
+  selector: 'app-person-detail',
+  templateUrl: './person-detail.component.html',
+  styleUrls: ['./person-detail.component.css']
+})
+export class PersonDetailComponent implements OnInit {
+
+  id: any = null;
+  person: any;
+  account: any = null;
+
+  displayedColumns: string[] = ['titular', 'saldo', 'CBU', 'cuenta', 'actions'];
+  dataSource = new MatTableDataSource(accounts);
 
   constructor(
-    private personService: PersonService,
-    private snackbar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    console.log(this.personsData[0].idPersona);
-  }
 
-  ngOnInit(): void {
-  }
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
 
-  clearId() {
-    this.id = '';
-  }
+        this.id = this.route.snapshot.params.id;
 
-  getPersonsById(path) {
-    this.snackbar.dismiss();
-    this.filteredPersons = [];
-    this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-      if (path === 'id') {
-        this.filteredPersons = persons.filter(person => person.idPersona === this.id.toString());
-      } else {
-        if (this.personType === 'nrodoc') {
-          this.filteredPersons = this.id.toString() !== '' ?
-            persons.filter(person => person.nroDoc === this.id.toString()) :
-            persons.filter(person => person.tipoPersona === 'F');
-        } else {
-          this.filteredPersons = this.id.toString() !== '' ?
-            persons.filter(person => person.nroCUI === this.id.toString()) :
-            persons.filter(person => person.tipoPersona === 'J');
-        }
+        this.person = persons.find(person => person.idPersona === this.id);
+
       }
-      this.id = '';
-      if (this.filteredPersons.length === 0) {
-        this.snackbar.open('No se encontraron registros relacionados con su búsqueda', 'Aceptar');
-      }
-    }, 2000);
-    /*this.personService.getPersonsById(this.id, path).subscribe(resp => {
-      // @ts-ignore
-      this.personsData = resp;
-    });*/
+    });
+
   }
 
-  setPerson(person) {
-    this.person = person;
+  setAccount(value) {
+    this.account = value;
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  ngOnInit() {
   }
 
 }

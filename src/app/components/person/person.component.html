@@ -13,7 +13,7 @@
         <div class="card-header" id="headingOne">
           <h5 class="mb-0">
             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Busqueda por Id Crecer
+              Búsqueda por Id Crecer
             </button>
           </h5>
         </div>
@@ -23,7 +23,15 @@
             <form>
               <mat-form-field class="example-full-width">
                 <mat-label>Id crecer</mat-label>
-                <input type="number" class="textarea" matInput placeholder="Ingrese el Id" required name="id" [(ngModel)]="id"/>
+                <input
+                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                       type="number"
+                       maxlength="10"
+                       matInput
+                       placeholder="Ingrese el Id"
+                       required
+                       name="id"
+                       [(ngModel)]="id"/>
               </mat-form-field>
               <button [disabled]="id === ''"  type="submit" class="btn btn-primary" (click)="getPersonsById('id')"
                       data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -37,7 +45,7 @@
         <div class="card-header" id="headingTwo">
           <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Busqueda por Persona
+              Búsqueda por Persona
             </button>
           </h5>
         </div>
@@ -46,24 +54,34 @@
             <form>
               <mat-form-field>
                 <mat-label>Tipo Persona</mat-label>
-                <mat-select name="personType" [(ngModel)]="personType">
+                <mat-select name="personType"
+                            (selectionChange)="clearId()" [(ngModel)]="personType">
                   <mat-option value="nrodoc">
-                    Natural
+                    Persona Fisica
                   </mat-option>
                   <mat-option value="cuit">
-                    Juridica
+                    Persona Juridica
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="example-full-width">
-                <mat-label>Nro Documento</mat-label>
-                <input class="textarea" type="number"  matInput placeholder="Ingrese el Id" name="id" [(ngModel)]="id" />
+                <mat-label>{{personType==='nrodoc' ? 'Nro Documento' : 'CUIT / CUIL'}}</mat-label>
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  type = "number"
+                  maxlength="{{personType==='nrodoc' ? 8 : 11 }}"
+                  matInput
+                  placeholder="Ingrese el Id"
+                  name="id"
+                  required
+                  [(ngModel)]="id" />
               </mat-form-field>
               <!--div class="form-group">
                 <label for="exampleInputEmail1">Denominacion</label>
                 <input class="form-control" id="exampleInputEmail1" placeholder="Ingrese la denominacion">
               </div-->
               <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
+                      [disabled]="id === ''"
                       data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 Aceptar
               </button>
@@ -75,7 +93,7 @@
         <div class="card-header" id="headingThree">
           <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Busqueda por Cuenta
+              Búsqueda por Filial/Cuenta
             </button>
           </h5>
         </div>
@@ -88,20 +106,32 @@
               </div-->
               <mat-form-field>
                 <mat-label>Tipo Cuenta</mat-label>
-                <mat-select name="personType" [(ngModel)]="personType">
+                <mat-select name="personType" (selectionChange)="clearId()" [(ngModel)]="personType">
+                  <mat-option value="cuit">
+                    Cuenta Corriente en Pesos
+                  </mat-option>
                   <mat-option value="nrodoc">
-                    Ahorros
+                    Caja de Ahorros en Pesos
                   </mat-option>
                   <mat-option value="cuit">
-                    Corriente
+                    Caja de Ahorros en Dolares
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <mat-label>Cuenta</mat-label>
-                <input class="textarea" type="number"  matInput placeholder="Ingrese la cuenta" name="id" [(ngModel)]="id" />
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  type = "number"
+                  maxlength="{{personType==='nrodoc' ? 8 : 11 }}"
+                  matInput
+                  placeholder="Ingrese la cuenta"
+                  name="id"
+                  required
+                  [(ngModel)]="id" />
               </mat-form-field>
               <button type="submit" class="btn btn-primary" (click)="getPersonsById(personType)"
+                      [disabled]="id === ''"
                       data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 Aceptar
               </button>
@@ -141,18 +171,14 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Acciones </th>
           <td mat-cell *matCellDef="let element">
-            <button
+            <a
               type="button"
               class="btn"
               matTooltip="Detalle"
-              (click)="setPerson(element)"
-              data-toggle="modal"
-              data-backdrop="static"
-              data-keyboard="false"
-              data-target="#detail">
+              routerLink="/person/{{element.idPersona}}">
               <i class="fas fa-eye"></i>
               Ver detalle
-            </button>
+            </a>
           </td>
         </ng-container>
 
@@ -160,51 +186,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-    </div>
-  </div>
-</div>
-
-<!-- key data Modal-->
-<div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div *ngIf="person!=null" class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detailLabel">Detalle - {{person.nombre}} </h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <div class="table-responsive">
-          <h3>Datos Personales</h3>
-          <table class="table table-sm table-hover">
-            <tr>
-              <th>Id Crecer</th>
-              <td>{{person.idPersona}}</td>
-              <th>Nombre</th>
-              <td>{{person.nombre}}</td>
-              <th>DNI</th>
-              <td>{{person.nroDoc}}</td>
-            </tr>
-            <tr>
-              <th>CUIT</th>
-              <td>{{person.nroCUI}}</td>
-              <th>Clave BUP</th>
-              <td>{{person.claveBUP}}</td>
-              <th>Tipo persona</th>
-              <td>{{person.tipoPersona === 'F' ? 'Natural' : 'Juridica' }}</td>
-            </tr>
-          </table>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" type="button" data-dismiss="modal">Balances</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion 2</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion 3</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal">Opcion N</button>
-      </div>
     </div>
   </div>
 </div>
