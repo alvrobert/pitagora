@@ -1,34 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {PersonService} from '../../services/person.service';
 import {MatSnackBar} from '@angular/material';
-import {FormControl, Validators} from '@angular/forms';
+import {Person} from '../../interfaces/person';
 
-export interface Person {
-  idPersona: string;
-  claveBUP: string;
-  restricciones: string;
-  motivoDesvinculacion: string;
-  tipoCaptura: string;
-  tipoDoc: string;
-  nroDoc: string;
-  emisor: string;
-  tipoDoc2: string;
-  nroDoc2: string;
-  emisor2: string;
-  tipoCUI: string;
-  nroCUI: string;
-  nroCUIAnt: string;
-  nroInterno: string;
-  nroDeInscEnte: string;
-  apellidoRazonSocial: string;
-  apellidoCasadaNombFantasia: string;
-  nombre: string;
-  tipoPersona: string;
-  provinciaDomic: string;
-  localidadDomic: string;
-  idVigEnUnificacion: string;
-}
-
+// This is a data mock to test app without the vpn connection
 const persons: Person[] = [
   {
     idPersona: '1000462228',
@@ -257,6 +232,7 @@ const persons: Person[] = [
   }
 ];
 
+
 @Component({
   selector: 'app-person',
   templateUrl: './person.component.html',
@@ -276,7 +252,7 @@ export class PersonComponent implements OnInit {
     private personService: PersonService,
     private snackbar: MatSnackBar,
   ) {
-    console.log(this.personsData[0].idPersona);
+
   }
 
   ngOnInit(): void {
@@ -310,7 +286,9 @@ export class PersonComponent implements OnInit {
         this.snackbar.open('No se encontraron registros relacionados con su búsqueda', 'Aceptar');
       }
     }, 2000);
-    /*this.personService.getPersonsById(this.id, path).subscribe(resp => {
+    /*
+    uncomment to use back functionality with vpn connection
+    this.personService.getPersonsById(this.id, path).subscribe(resp => {
       // @ts-ignore
       this.personsData = resp;
     });*/
