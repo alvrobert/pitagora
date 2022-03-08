@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-const endpoint = 'http://localhost:8080/clients';
+const endpoint = '/clients';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',

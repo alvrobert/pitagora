@@ -1,7 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import {PersonService} from '../../services/person.service';
 import {MatSnackBar} from '@angular/material';
-import {Person} from '../../interfaces/person';
+
+export interface Person {
+  idPersona: string;
+  claveBUP: string;
+  restricciones: string;
+  motivoDesvinculacion: string;
+  tipoCaptura: string;
+  tipoDoc: string;
+  nroDoc: string;
+  emisor: string;
+  tipoDoc2: string;
+  nroDoc2: string;
+  emisor2: string;
+  tipoCUI: string;
+  nroCUI: string;
+  nroCUIAnt: string;
+  nroInterno: string;
+  nroDeInscEnte: string;
+  apellidoRazonSocial: string;
+  apellidoCasadaNombFantasia: string;
+  nombre: string;
+  tipoPersona: string;
+  provinciaDomic: string;
+  localidadDomic: string;
+  idVigEnUnificacion: string;
+}
 
 // This is a data mock to test app without the vpn connection
 const persons: Person[] = [
@@ -290,8 +315,13 @@ export class PersonComponent implements OnInit {
     uncomment to use back functionality with vpn connection
     this.personService.getPersonsById(this.id, path).subscribe(resp => {
       // @ts-ignore
-      this.personsData = resp;
-    });*/
+      this.filteredPersons = resp;
+      this.loading = false;
+      if (this.filteredPersons.length === 0) {
+        this.snackbar.open('No se encontraron registros relacionados con su búsqueda', 'Aceptar');
+      }
+    });
+    */
   }
 
   setPerson(person) {
